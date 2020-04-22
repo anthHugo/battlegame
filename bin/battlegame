@@ -5,4 +5,4 @@ use App\BattleGame;
 
 require dirname(__DIR__).'/vendor/autoload.php';
 
-(new BattleGame())->run();
+(new BattleGame())->output();

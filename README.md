@@ -17,8 +17,6 @@ cd battlegame/
 composer install
 ```
 
-Se rendre sur http://localhost:8443 pour accèder à l'api
-
 Pour lancer une partie, lancer la commande :
 
 ```bash
