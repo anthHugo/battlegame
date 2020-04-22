@@ -20,4 +20,14 @@ Player 1");
 
          (new BattleGame(2, 4, false))->output();
     }
+
+    public function testRunShuffle(): void
+    {
+        static::expectOutputString("Player 0  |\r
+1  |\r
+\r
+Player 0");
+
+         (new BattleGame(1, 1, true))->output();
+    }
 }
