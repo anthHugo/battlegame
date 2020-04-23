@@ -1,4 +1,6 @@
-# BattleGame
+# BattleGame 
+![CI](https://github.com/anthHugo/battlegame/workflows/CI/badge.svg)
+
 Il s'agit de coder en PHP objet une simulation de jeu de bataille (le jeu de carte) en version simplifiée :
 
 * 52 cartes, on simplifie en utilisant simplement des valeurs de 1 à 52
@@ -6,6 +8,7 @@ Il s'agit de coder en PHP objet une simulation de jeu de bataille (le jeu de car
 * chaque joueur retourne la première carte de son paquet, le joueur disposant de la plus forte carte marque un point
 * on continue jusqu'à ce qu'il n'y ait plus de carte à jouer
 * on affiche le nom du vainqueur
+
 
 ## Comment démarrer
 
