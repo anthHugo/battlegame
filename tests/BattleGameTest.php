@@ -12,21 +12,37 @@ class BattleGameTest extends TestCase
 {
     public function testRun(): void
     {
-        static::expectOutputString("Player 0  |Player 1  |\r
-1  |3  |\r
-2  |4  |\r
+        static::expectOutputString(
+"===========================\r
+        BattleGame\r
+===========================\r
+---------------------------\r
+|  Player 1  |  Player 2  |\r
+---------------------------\r
+|         1  |         3  |\r
+|         2  |         4  |\r
+---------------------------\r
 \r
-Player 1");
+Winner is : Player 2\r
+\r\n");
 
          (new BattleGame(2, 4, false))->output();
     }
 
     public function testRunShuffle(): void
     {
-        static::expectOutputString("Player 0  |\r
-1  |\r
+        static::expectOutputString(
+"==============\r
+  BattleGame\r
+==============\r
+--------------\r
+|  Player 1  |\r
+--------------\r
+|         1  |\r
+--------------\r
 \r
-Player 0");
+Winner is : Player 1\r
+\r\n");
 
          (new BattleGame(1, 1, true))->output();
     }

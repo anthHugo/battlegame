@@ -9,6 +9,43 @@ Il s'agit de coder en PHP objet une simulation de jeu de bataille (le jeu de car
 * on continue jusqu'à ce qu'il n'y ait plus de carte à jouer
 * on affiche le nom du vainqueur
 
+```bash
+===========================
+        BattleGame
+===========================
+---------------------------
+|  Player 1  |  Player 2  |
+---------------------------
+|        52  |        27  |
+|        30  |        33  |
+|        15  |        26  |
+|        25  |        43  |
+|        18  |        19  |
+|        29  |        28  |
+|         9  |        48  |
+|        36  |        47  |
+|        41  |        22  |
+|        16  |        10  |
+|        44  |        49  |
+|        12  |         4  |
+|         3  |        50  |
+|        11  |        40  |
+|        34  |        51  |
+|        14  |         1  |
+|        35  |        21  |
+|         7  |        39  |
+|        38  |         2  |
+|        37  |        17  |
+|        45  |        31  |
+|        23  |        20  |
+|        24  |        42  |
+|        46  |        13  |
+|        32  |         5  |
+|         8  |         6  |
+---------------------------
+
+Winner is : Player 1
+```
 
 ## Comment démarrer
 

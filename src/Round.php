@@ -16,14 +16,9 @@ class Round
         }
     }
 
-    public function getMax(): int
+    public function getWinnerId(): string
     {
-        return max($this->cards);
-    }
-
-    public function getWinnerId()
-    {
-        return array_search($this->getMax(), $this->cards);
+        return (string) array_search(max($this->cards), $this->cards);
     }
 
     /**
