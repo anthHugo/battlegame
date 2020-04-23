@@ -10,33 +10,48 @@ class BattleGame
 
     public function __construct(int $nbPlayers = 2, int $totalCards = 52, bool $shuffle = true)
     {
-        $players = [];
+        $this->game = new Game();
+
         $suit = new Suit($totalCards);
 
         if ($shuffle) {
             $suit->shuffle();
         }
 
-        for ($i = 0; $i < $nbPlayers; $i++) {
-            $players[] = new Player("Player $i", $suit->slice($i + 1, $nbPlayers));
+        for ($i = 1; $i <= $nbPlayers; $i++) {
+            $this->game->addPlayer(new Player("Player $i", $suit->slice($i, $nbPlayers)));
         }
-
-        $this->game = new Game($players);
     }
 
     public function output(): void
     {
-        $results = $this->game->run();
-        foreach ($results->getPlayers() as $player) {
-            echo "$player  |";
+        $title = '|';
+        foreach ($this->game->getPlayers() as $player) {
+            $title .= "  $player  |";
         }
-        echo "\r\n";
-        foreach ($results->getRounds() as $round) {
-            foreach ($results->getPlayers() as $player) {
-                echo $round->getCards()[$player->getId()] . "  |";
+
+        $line = '';
+        foreach ($this->game->getRounds() as $round) {
+            $line .= '|';
+            foreach ($this->game->getPlayers() as $player) {
+                $cardValue = $round->getCards()[$player->getId()];
+                $line .= str_repeat(' ', strlen($player->getName()) - strlen(((string) $cardValue)) + 2)
+                    . $cardValue . "  |";
             }
-            echo "\r\n";
+
+            $line .= "\r\n";
         }
-        echo "\r\n" . $results->getWinner();
+
+        $output = str_repeat('=', strlen($title))."\r\n";
+        $output .= str_repeat(' ', intval(strlen($title) / 2) - 5) . "BattleGame\r\n";
+        $output .= str_repeat('=', strlen($title))."\r\n";
+        $output .= str_repeat('-', strlen($title))."\r\n";
+        $output .= $title;
+        $output .= "\r\n" . str_repeat('-', strlen($title))."\r\n";
+        $output .= $line;
+        $output .= str_repeat('-', strlen($title))."\r\n";
+        $output .= "\r\nWinner is : " . $this->game->getWinner() . "\r\n\r\n";
+
+        echo $output;
     }
 }

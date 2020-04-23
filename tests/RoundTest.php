@@ -10,18 +10,11 @@ use PHPUnit\Framework\TestCase;
 
 class RoundTest extends TestCase
 {
-    public function testGetMax()
-    {
-        $round = new Round([1 => new Card(2), 3 => new Card(4)]);
-
-        static::assertSame(4, $round->getMax());
-    }
-
     public function testGetWinnerId(): void
     {
         $round = new Round([1 => new Card(2), 3 => new Card(4)]);
 
-        static::assertSame(3, $round->getWinnerId());
+        static::assertSame("3", $round->getWinnerId());
     }
 
     public function testGetCards(): void
