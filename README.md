@@ -10,6 +10,8 @@ Il s'agit de coder en PHP objet une simulation de jeu de bataille (le jeu de car
 * on affiche le nom du vainqueur
 
 ```bash
+$ php bin/battlegame
+
 ===========================
         BattleGame
 ===========================
@@ -49,12 +51,11 @@ Winner is : Player 1
 
 ## Comment démarrer
 
-Pour démarrer cloner le dépôt et exécuter la stack Docker  :
+Pour démarrer cloner le dépôt  :
 
 ```bash
 git clone git@github.com:anthHugo/battlegame.git
 cd battlegame/
-composer install
 ```
 
 Pour lancer une partie, lancer la commande :
@@ -68,5 +69,6 @@ php bin/battlegame
 Pour lancer les tests PHPUnit, exécuter:
 
 ```bash
+composer install
 php vendor/bin/phpunit
 ```
