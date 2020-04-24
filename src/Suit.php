@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Collection\CardCollection;
+
 class Suit
 {
     private array $cards = [];
@@ -16,21 +18,22 @@ class Suit
         $this->totalCards = $totalCards;
     }
 
-    public function shuffle(): void
+    public function shuffle(): self
     {
         shuffle($this->cards);
+
+        return $this;
     }
 
-    /**
-     * @return Card[]
-     */
-    public function slice(int $currentSlice = 1, int $totalSlice = 1): array
+    public function get(int $currentSlice = 1, int $totalSlice = 1): CardCollection
     {
+        if ($totalSlice < 1) {
+            $totalSlice = 1;
+        }
+
         $length = intval($this->totalCards / $totalSlice);
         $offset = ($currentSlice * $length) - $length;
 
-        return array_map(function(int $value): Card {
-            return new Card($value);
-        }, array_slice($this->cards, $offset, $length));
+        return new CardCollection(array_slice($this->cards, $offset, $length));
     }
 }

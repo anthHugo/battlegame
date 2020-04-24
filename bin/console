@@ -1,0 +1,11 @@
+#!/usr/bin/env php
+<?php
+
+use App\Command\BattleGameCommand;
+use Symfony\Component\Console\Application;
+
+require dirname(__DIR__).'/vendor/autoload.php';
+
+$application = new Application();
+$application->add(new BattleGameCommand());
+$application->run();

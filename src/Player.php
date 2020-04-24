@@ -4,28 +4,22 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Collection\CardCollection;
+
 class Player
 {
     private string $id;
 
     private string $name;
 
-    /**
-     * @var Card[]
-     */
-    private array $cards;
+    private CardCollection $cards;
 
-    public function __construct(string $name, array $cards = [])
+    public function __construct(string $name, CardCollection $cards)
     {
-        foreach ($cards as $card) {
-            if (false === $card instanceof Card) {
-                throw new \Exception('Card must be an instance of App\Card');
-            }
-        }
-
         $this->id = uniqid();
         $this->name = $name;
         $this->cards = $cards;
+        $this->cards->setOwner($this->id);
     }
 
     public function getId(): string
@@ -38,10 +32,14 @@ class Player
         return $this->name;
     }
 
-    /**
-     * @return Card[]
-     */
-    public function getCards(): array
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getCards(): CardCollection
     {
         return $this->cards;
     }

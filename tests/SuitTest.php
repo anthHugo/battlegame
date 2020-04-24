@@ -12,13 +12,11 @@ class SuitTest extends TestCase
 {
     public function testCreateSuitCard(): void
     {
-        $suit = new Suit(52);
-        $cards = $suit->slice();
+        $suit = new Suit(2);
+        $cards = $suit->get();
 
-        static::assertIsArray($cards);
-        static::assertCount(52, $cards);
-
-        foreach ($suit->slice() as $card) {
+        static::assertCount(2, $cards);
+        foreach ($cards as $card) {
             static::assertInstanceOf(Card::class, $card);
         }
     }
@@ -30,18 +28,29 @@ class SuitTest extends TestCase
     {
         $suit = new Suit($totalCards);
 
-        static::assertCount($result, $suit->slice($current, $total));
+        static::assertCount($result, $suit->get($current, $total));
+    }
+
+    public function testSliceLessThanOne(): void
+    {
+        static::assertCount(2, (new Suit(2))->get(0, 0));
+        static::assertCount(2, (new Suit(2))->get(-1, -1));
+    }
+
+    public function testShuffle(): void
+    {
+        static::assertNotSame([1, 2, 3, 4], (new Suit(4))->shuffle()->get()->getArrayCopy());
     }
 
     public function testSuitsAreDifferent(): void
     {
-        $suit = new Suit(52);
-        $player1 = $suit->slice(1, 2);
-        $player2 = $suit->slice(2, 2);
+        $suit = new Suit(8);
+        $slice1 = $suit->get(1, 2);
+        $slice2 = $suit->get(2, 2);
 
-        array_map(function(Card $card1, Card $card2) {
-            static::assertNotEquals($card2->getValue(), $card1->getValue());
-        }, $player1, $player2);
+        foreach ($slice1 as $slice) {
+            static::assertNotContains($slice->getValue(), $slice2->getArrayCopy());
+        }
     }
 
     public function sliceProvider(): array

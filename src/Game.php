@@ -4,51 +4,53 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Collection\PlayerCollection;
+use App\Collection\RoundCollection;
+
 class Game
 {
-    /**
-     * @var Player[]
-     */
-    private array $players = [];
+    private PlayerCollection $players;
+
+    public function __construct()
+    {
+        $this->players = new PlayerCollection();
+    }
+
+    public static function create(int $nbPlayers, int $totalCards, bool $shuffle = true): self
+    {
+        $instance = new static();
+        $suit = new Suit($totalCards);
+
+        if ($shuffle) {
+            $suit->shuffle();
+        }
+
+        for ($i = 1; $i <= $nbPlayers; $i++) {
+            $instance->addPlayer(new Player("Player $i", $suit->get($i, $nbPlayers)));
+        }
+
+        return $instance;
+    }
 
     public function addPlayer(Player $player): self
     {
-        $this->players[$player->getId()] = $player;
+        $this->players->append($player);
 
         return $this;
     }
 
-    /**
-     * @return Player[]
-     */
-    public function getPlayers(): array
+    public function getPlayers(): PlayerCollection
     {
         return $this->players;
     }
 
-    /** @return Round[] */
-    public function getRounds(): array
+    public function getRounds(): RoundCollection
     {
-        $iterator = new \MultipleIterator(\MultipleIterator::MIT_NEED_ALL | \MultipleIterator::MIT_KEYS_ASSOC);
-
-        foreach ($this->players as $id => $player) {
-            $iterator->attachIterator(new \ArrayIterator($player->getCards()), $id);
-        }
-
-        return array_map(function (array $round) {
-            return new Round($round);
-        }, iterator_to_array($iterator, false));
+        return new RoundCollection($this->players);
     }
 
     public function getWinner(): Player
     {
-        $results = array_fill_keys(array_keys($this->players), 0);
-        foreach ($this->getRounds() as $round) {
-            $results[$round->getWinnerId()]++;
-        }
-
-        $winnerId = array_search(max($results), $results);
-
-        return $this->players[$winnerId];
+        return $this->getRounds()->getWinner();
     }
 }

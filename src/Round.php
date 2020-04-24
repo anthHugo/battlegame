@@ -4,21 +4,19 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Collection\CardCollection;
+
 class Round
 {
     /** @var int[] */
     private array $cards = [];
 
-    public function __construct(array $cards)
+    /** @param CardCollection $cards */
+    public function __construct(iterable $cards)
     {
-        foreach($cards as $playerId => $card) {
-            $this->cards[$playerId] = $card->getValue();
+        foreach($cards as $card) {
+            $this->cards[$card->getIdentifier()] = $card->getValue();
         }
-    }
-
-    public function getWinnerId(): string
-    {
-        return (string) array_search(max($this->cards), $this->cards);
     }
 
     /**
@@ -27,5 +25,10 @@ class Round
     public function getCards(): array
     {
         return $this->cards;
+    }
+
+    public function getWinnerId(): string
+    {
+        return (string) array_search(max($this->cards), $this->cards);
     }
 }
