@@ -39,7 +39,7 @@ class SuitTest extends TestCase
 
     public function testShuffle(): void
     {
-        static::assertNotSame([1, 2, 3, 4], (new Suit(4))->shuffle()->get()->getArrayCopy());
+        static::assertNotSame(range(1, 10), (new Suit(10))->shuffle()->get()->getArrayCopy());
     }
 
     public function testSuitsAreDifferent(): void
