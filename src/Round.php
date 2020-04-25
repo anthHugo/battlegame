@@ -29,6 +29,6 @@ class Round
 
     public function getWinnerId(): string
     {
-        return (string) array_search(max($this->cards), $this->cards);
+        return array_search(max($this->cards), $this->cards);
     }
 }

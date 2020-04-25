@@ -8,9 +8,9 @@ use App\Player;
 
 class PlayerCollection extends \ArrayIterator
 {
-    public function __construct($array = [], $flags = 0)
+    public function __construct(array $array = [])
     {
-        parent::__construct(array_filter($array, fn ($value) => $value instanceof Player), $flags);
+        parent::__construct(array_filter($array, fn ($value) => $value instanceof Player));
     }
 
     public function current(): Player

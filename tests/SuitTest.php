@@ -13,7 +13,7 @@ class SuitTest extends TestCase
     public function testCreateSuitCard(): void
     {
         $suit = new Suit(2);
-        $cards = $suit->get();
+        $cards = $suit->get(1, 1);
 
         static::assertCount(2, $cards);
         foreach ($cards as $card) {
@@ -34,12 +34,18 @@ class SuitTest extends TestCase
     public function testSliceLessThanOne(): void
     {
         static::assertCount(2, (new Suit(2))->get(0, 0));
-        static::assertCount(2, (new Suit(2))->get(-1, -1));
+        static::assertCount(2, (new Suit(2))->get(1, -1));
     }
 
     public function testShuffle(): void
     {
-        static::assertNotSame(range(1, 10), (new Suit(10))->shuffle()->get()->getArrayCopy());
+        static::assertNotSame(
+            range(1, 10),
+            (new Suit(10))
+                ->shuffle()
+                ->get(1, 1)
+                ->getArrayCopy()
+        );
     }
 
     public function testSuitsAreDifferent(): void

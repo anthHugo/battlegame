@@ -11,7 +11,9 @@ class RoundCollection extends \MultipleIterator
 {
     private PlayerCollection $players;
 
-    public function __construct(PlayerCollection $players)
+    private const DEFAULT_RESULT = 0;
+
+    public function addPlayers(PlayerCollection $players): self
     {
         $this->players = $players;
 
@@ -19,7 +21,7 @@ class RoundCollection extends \MultipleIterator
             $this->attachIterator($player->getCards());
         }
 
-        parent::__construct();
+        return $this;
     }
 
     public function current(): Round
@@ -39,7 +41,7 @@ class RoundCollection extends \MultipleIterator
 
     public function getWinner(): Player
     {
-        $results = array_fill_keys($this->players->getPlayerIds(), 0);
+        $results = array_fill_keys($this->players->getPlayerIds(), static::DEFAULT_RESULT);
 
         foreach ($this as $round) {
             $results[$round->getWinnerId()]++;

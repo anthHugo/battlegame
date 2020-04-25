@@ -10,9 +10,9 @@ class CardCollection extends \ArrayIterator
 {
     private ?string $owner = null;
 
-    public function __construct($array = [], $flags = 0)
+    public function __construct(array $array = [])
     {
-        parent::__construct(array_filter($array, fn ($value) => \is_int($value)), $flags);
+        parent::__construct(array_filter($array, fn ($value) => \is_int($value)));
     }
 
     public function setOwner(string $identifier): self
@@ -30,10 +30,5 @@ class CardCollection extends \ArrayIterator
     public function key(): string
     {
         return (string) parent::key();
-    }
-
-    public function valid(): bool
-    {
-        return \is_int(parent::current());
     }
 }

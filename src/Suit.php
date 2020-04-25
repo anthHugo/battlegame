@@ -12,7 +12,7 @@ class Suit
 
     private int $totalCards;
 
-    public function __construct(int $totalCards = 52)
+    public function __construct(int $totalCards)
     {
         $this->cards = range(1, $totalCards);
         $this->totalCards = $totalCards;
@@ -25,9 +25,9 @@ class Suit
         return $this;
     }
 
-    public function get(int $currentSlice = 1, int $totalSlice = 1): CardCollection
+    public function get(int $currentSlice, int $totalSlice): CardCollection
     {
-        if ($totalSlice < 1) {
+        if ($totalSlice <= 0) {
             $totalSlice = 1;
         }
 

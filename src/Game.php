@@ -16,16 +16,16 @@ class Game
         $this->players = new PlayerCollection();
     }
 
-    public static function create(int $nbPlayers, int $totalCards, bool $shuffle = true): self
+    public static function create(int $nbPlayers, int $totalCards, bool $shuffle): self
     {
         $instance = new static();
         $suit = new Suit($totalCards);
 
         if ($shuffle) {
-            $suit->shuffle();
+            $suit = $suit->shuffle();
         }
 
-        for ($i = 1; $i <= $nbPlayers; $i++) {
+        foreach (range(1, $nbPlayers) as $i) {
             $instance->addPlayer(new Player("Player $i", $suit->get($i, $nbPlayers)));
         }
 
@@ -46,7 +46,7 @@ class Game
 
     public function getRounds(): RoundCollection
     {
-        return new RoundCollection($this->players);
+        return (new RoundCollection())->addPlayers($this->players);
     }
 
     public function getWinner(): Player

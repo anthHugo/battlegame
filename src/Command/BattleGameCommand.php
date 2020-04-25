@@ -16,25 +16,18 @@ class BattleGameCommand extends Command
 {
     private const PLAYERS = 2;
     private const CARDS = 52;
+    private const SUCCESS = 0;
 
     private bool $shuffle;
 
-    public function __construct(bool $shuffle = true)
+    public function __construct(bool $shuffle)
     {
         $this->shuffle = $shuffle;
 
-        parent::__construct();
+        parent::__construct('game:run');
     }
 
-    protected function configure()
-    {
-        $this
-            ->setName('game:run')
-            ->setDescription('Run a new game')
-        ;
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $style = new SymfonyStyle($input, $output);
 
@@ -47,7 +40,7 @@ class BattleGameCommand extends Command
         $style->table(
             array_map(function (Player $player) use ($style): Player {
                 $player->setName(
-                    $style->askQuestion(new Question("Name of player $player ?", (string) $player))
+                    $style->askQuestion(new Question("Name of player $player ?", $player->getName()))
                 );
 
                 return $player;
@@ -55,9 +48,8 @@ class BattleGameCommand extends Command
             $game->getRounds()->getCards()
         );
 
-        $style->write('Winner is : ' . $game->getWinner()->getName());
-        $style->newLine(2);
+        $style->write('Winner is : ' . $game->getWinner()->getName() . "\r\n");
 
-        return 0;
+        return static::SUCCESS;
     }
 }

@@ -20,7 +20,7 @@ class RoundCollectionTest extends TestCase
             new Player('peter', new CardCollection([3, 4])),
         ]);
 
-        $collection = new RoundCollection($players);
+        $collection = (new RoundCollection())->addPlayers($players);
 
         foreach ($collection as $index => $item) {
             static::assertInstanceOf(Round::class, $item);

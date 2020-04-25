@@ -4,22 +4,14 @@
             "src"
         ]
     },
-    "timeout": 10,
     "logs": {
         "text": "var/infection/infection.log",
         "badge": {
             "branch": "master"
         }
     },
+    "minMsi": 90,
+    "minCoveredMsi": 90,
     "tmpDir": "var",
-    "mutators": {
-        "@default": true,
-        "@function_signature": false,
-        "TrueValue": {
-            "ignore": [
-                "NameSpace\\*\\Class::method"
-            ]
-        }
-    },
     "testFrameworkOptions": "-vvv"
 }

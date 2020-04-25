@@ -14,7 +14,7 @@ class GameTest extends TestCase
 {
     public function testCreateGame(): void
     {
-        static::assertInstanceOf(Game::class, Game::create(1, 2));
+        static::assertInstanceOf(Game::class, Game::create(1, 2, true));
     }
 
     public function testAddPlayer(): void
