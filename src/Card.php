@@ -21,6 +21,13 @@ class Card
         return $this->value;
     }
 
+    public function setIdentifier(?string $identifier): self
+    {
+        $this->identifier = $identifier;
+
+        return $this;
+    }
+
     public function getIdentifier(): ?string
     {
         return $this->identifier;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Collection\CardCollection;
 use App\Collection\PlayerCollection;
 use App\Collection\RoundCollection;
 
@@ -11,32 +12,20 @@ final class Game
 {
     private PlayerCollection $players;
 
-    public function __construct()
+    private const START = 1;
+
+    public function __construct(int $totalPlayers, int $totalCards, bool $shuffle)
     {
         $this->players = new PlayerCollection();
-    }
-
-    public static function create(int $nbPlayers, int $totalCards, bool $shuffle): self
-    {
-        $instance = new static();
-        $suit = new Suit($totalCards);
+        $cards = CardCollection::create(range(static::START, $totalCards));
 
         if ($shuffle) {
-            $suit = $suit->shuffle();
+            $cards = $cards->shuffle();
         }
 
-        foreach (range(1, $nbPlayers) as $i) {
-            $instance->addPlayer(new Player("Player $i", $suit->get($i, $nbPlayers)));
+        foreach (range(static::START, $totalPlayers) as $i) {
+            $this->players->append(new Player("Player $i", $cards->slice($i, $totalPlayers)));
         }
-
-        return $instance;
-    }
-
-    public function addPlayer(Player $player): self
-    {
-        $this->players->append($player);
-
-        return $this;
     }
 
     public function getPlayers(): PlayerCollection

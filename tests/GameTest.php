@@ -4,39 +4,30 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
-use App\Card;
-use App\Collection\CardCollection;
+use App\Collection\PlayerCollection;
+use App\Collection\RoundCollection;
 use App\Game;
 use App\Player;
 use PHPUnit\Framework\TestCase;
 
 class GameTest extends TestCase
 {
-    public function testCreateGame(): void
+    /** @dataProvider boolShuffle */
+    public function testCreateGameWithShuffle(bool $shuffle): void
     {
-        static::assertInstanceOf(Game::class, Game::create(1, 2, true));
+        $game = new Game(2, 6, $shuffle);
+
+        static::assertInstanceOf(Game::class, $game);
+        static::assertInstanceOf(PlayerCollection::class, $game->getPlayers());
+        static::assertInstanceOf(RoundCollection::class, $game->getRounds());
+        static::assertInstanceOf(Player::class, $game->getWinner());
     }
 
-    public function testAddPlayer(): void
+    public function boolShuffle(): array
     {
-        $game = new Game();
-        $game->addPlayer(new Player('Player 1', new CardCollection([1, 3, 4])));
-        $game->addPlayer(new Player('Player 2', new CardCollection([6, 2, 5])));
-
-        foreach ($game->getPlayers() as $player) {
-            static::assertInstanceOf(Player::class, $player);
-        }
-    }
-
-    public function testGetWinner(): void
-    {
-        $player1 = new Player('Player 1', new CardCollection([1, 3, 4]));
-        $player2 = new Player('Player 2', new CardCollection([6, 2, 5]));
-
-        $game = new Game();
-        $game->addPlayer($player1);
-        $game->addPlayer($player2);
-
-        static::assertSame($player2, $game->getWinner());
+        return [
+            [true],
+            [false],
+        ];
     }
 }

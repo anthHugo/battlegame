@@ -31,7 +31,7 @@ class BattleGameCommand extends Command
     {
         $style = new SymfonyStyle($input, $output);
 
-        $game = Game::create(
+        $game = new Game(
             \intval($style->askQuestion(new Question('Number of player ?', static::PLAYERS))),
             \intval($style->askQuestion(new Question('Number of cards ?', static::CARDS))),
             $this->shuffle

@@ -13,7 +13,7 @@ class PlayerTest extends TestCase
 {
     public function testConstructor(): void
     {
-        $player = new Player('Player 1', new CardCollection([1, 3]));
+        $player = new Player('Player 1', CardCollection::create([1, 3]));
 
         static::assertSame('Player 1', $player->getName());
         static::assertInstanceOf(CardCollection::class, $player->getCards());
@@ -21,6 +21,6 @@ class PlayerTest extends TestCase
 
     public function testToString(): void
     {
-        static::assertSame('Player 1', (string) new Player('Player 1', new CardCollection([])));
+        static::assertSame('Player 1', (string) new Player('Player 1', CardCollection::create([])));
     }
 }

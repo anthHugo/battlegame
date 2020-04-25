@@ -14,8 +14,8 @@ class PlayerCollectionTest extends TestCase
     public function testCreateCollection(): void
     {
         $players = [
-            new Player('john', new CardCollection([1, 2])),
-            new Player('peter', new CardCollection([3, 4])),
+            new Player('john', CardCollection::create([1, 2])),
+            new Player('peter', CardCollection::create([3, 4])),
         ];
 
         foreach (new PlayerCollection($players) as $index => $item) {
@@ -34,8 +34,8 @@ class PlayerCollectionTest extends TestCase
         static::assertCount(
             2,
             new PlayerCollection([
-                new Player('john', new CardCollection([1, 2])),
-                new Player('peter', new CardCollection([3, 4])),
+                new Player('john', CardCollection::create([1, 2])),
+                new Player('peter', CardCollection::create([3, 4])),
                 false,
                 "string",
                 12.5,

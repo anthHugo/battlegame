@@ -27,6 +27,7 @@ class RoundCollection extends \MultipleIterator
     /** @return Round[] */
     public function current(): array
     {
+        //var_dump(parent::current());
         return [new Round(parent::current())];
     }
 

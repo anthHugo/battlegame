@@ -16,8 +16,8 @@ class RoundCollectionTest extends TestCase
     public function testCreateCollection(): void
     {
         $players = new PlayerCollection([
-            new Player('john', new CardCollection([1, 2])),
-            new Player('peter', new CardCollection([3, 4])),
+            new Player('john', CardCollection::create([1, 2])),
+            new Player('peter', CardCollection::create([3, 4])),
         ]);
 
         $collection = (new RoundCollection())->addPlayers($players);
