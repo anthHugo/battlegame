@@ -8,6 +8,7 @@ use App\Collection\CardCollection;
 
 class Suit
 {
+    /** @var int[] */
     private array $cards = [];
 
     private int $totalCards;

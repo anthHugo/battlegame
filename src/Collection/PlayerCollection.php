@@ -8,6 +8,7 @@ use App\Player;
 
 class PlayerCollection extends \ArrayIterator
 {
+    /** @param Player[] $array */
     public function __construct(array $array = [])
     {
         parent::__construct(array_filter($array, fn ($value) => $value instanceof Player));
@@ -29,6 +30,7 @@ class PlayerCollection extends \ArrayIterator
         return null;
     }
 
+    /** @return string[] */
     public function getPlayerIds(): array
     {
         return array_map(fn (Player $player) => $player->getId(), $this->getArrayCopy());

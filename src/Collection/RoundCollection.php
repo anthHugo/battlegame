@@ -17,38 +17,48 @@ class RoundCollection extends \MultipleIterator
     {
         $this->players = $players;
 
-        foreach ($this->players  as $player) {
+        foreach ($this->players as $player) {
             $this->attachIterator($player->getCards());
         }
 
         return $this;
     }
 
-    public function current(): Round
+    /** @return Round[] */
+    public function current(): array
     {
-        return new Round(parent::current());
+        return [new Round(parent::current())];
     }
 
+    /** @return array[] */
     public function getCards(): array
     {
-        $cards = [];
-        foreach ($this as $round) {
-            $cards[] = $round->getCards();
-        }
-
-        return $cards;
+        return \array_map(
+            fn ($round) => \current($round)->getCards(),
+            iterator_to_array($this, false)
+        );
     }
 
     public function getWinner(): Player
     {
-        $results = array_fill_keys($this->players->getPlayerIds(), static::DEFAULT_RESULT);
+        $results = \array_fill_keys($this->players->getPlayerIds(), static::DEFAULT_RESULT);
 
         foreach ($this as $round) {
-            $results[$round->getWinnerId()]++;
+            $results[\current($round)->getWinnerId()]++;
         }
 
-        $winnerId = array_search(max($results), $results);
+        $player = $this->players->getPlayer($this->findWinnerId($results));
 
-        return $this->players->getPlayer($winnerId);
+        if (is_null($player)) {
+            throw new \Exception('Player not found');
+        }
+
+        return $player;
+    }
+
+    /** @param int[] $results */
+    private function findWinnerId(array $results): string
+    {
+        return \array_search(\max($results), $results, true);
     }
 }

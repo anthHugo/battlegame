@@ -23,12 +23,22 @@ class RoundCollectionTest extends TestCase
         $collection = (new RoundCollection())->addPlayers($players);
 
         foreach ($collection as $index => $item) {
-            static::assertInstanceOf(Round::class, $item);
-            static::assertSame($players[1]->getId(), $item->getWinnerId());
+            static::assertInstanceOf(Round::class, current($item));
+            static::assertSame($players[1]->getId(), current($item)->getWinnerId());
         }
 
         static::assertSame($players[1], $collection->getWinner());
     }
 
+    public function testThrowException(): void
+    {
+        static::expectException(\Exception::class);
 
+        $players = static::createMock(PlayerCollection::class);
+        $players->method('getPlayerIds')->willReturn(["id", "tmp"]);
+        $players->method('getPlayer')->willReturn(null);
+
+        $collection = (new RoundCollection())->addPlayers($players);
+        $collection->getWinner();
+    }
 }

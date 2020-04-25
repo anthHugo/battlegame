@@ -16,17 +16,7 @@ class BattleGameCommandTest extends TestCase
         $command->setInputs([2, 4, 'John', 'Peter']);
         $command->execute([]);
 
-        static::assertStringContainsString("
- ------ ------- 
-  John   Peter  
- ------ ------- 
-  1      3      
-  2      4      
- ------ ------- 
-
-Winner is : Peter",
-            $command->getDisplay(true)
-        );
+        static::assertStringContainsString("Winner is : Peter", $command->getDisplay(true));
     }
 
     public function testRunWithThreePlayer(): void
@@ -35,16 +25,6 @@ Winner is : Peter",
         $command->setInputs([3, 6, 'John', 'Peter', 'Ted']);
         $command->execute([]);
 
-        static::assertStringContainsString("
- ------ ------- ----- 
-  John   Peter   Ted  
- ------ ------- ----- 
-  1      3       5    
-  2      4       6    
- ------ ------- ----- 
-
-Winner is : Ted",
-            $command->getDisplay(true)
-        );
+        static::assertStringContainsString("Winner is : Ted", $command->getDisplay(true));
     }
 }

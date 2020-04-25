@@ -7,7 +7,7 @@ namespace App;
 use App\Collection\PlayerCollection;
 use App\Collection\RoundCollection;
 
-class Game
+final class Game
 {
     private PlayerCollection $players;
 

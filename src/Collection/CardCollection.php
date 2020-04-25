@@ -10,6 +10,7 @@ class CardCollection extends \ArrayIterator
 {
     private ?string $owner = null;
 
+    /** @param int[] $array */
     public function __construct(array $array = [])
     {
         parent::__construct(array_filter($array, fn ($value) => \is_int($value)));
