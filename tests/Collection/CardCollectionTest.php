@@ -64,6 +64,11 @@ class CardCollectionTest extends TestCase
         }
     }
 
+    public function testMax(): void
+    {
+        static::assertSame(5, CardCollection::create([5, 2, 3])->getMax()->getValue());
+    }
+
     public function sliceProvider(): array
     {
         return [

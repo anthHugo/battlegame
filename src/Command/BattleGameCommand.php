@@ -6,6 +6,7 @@ namespace App\Command;
 
 use App\Game;
 use App\Player;
+use App\Round;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -45,7 +46,9 @@ class BattleGameCommand extends Command
 
                 return $player;
             }, $game->getPlayers()->getArrayCopy()),
-            $game->getRounds()->getCards()
+            array_map(function (Round $round) {
+                return $round->getCards()->getArrayCopy();
+            }, $game->getRounds()->getArrayCopy())
         );
 
         $style->write('Winner is : ' . $game->getWinner()->getName() . "\r\n");

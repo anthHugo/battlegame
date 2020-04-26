@@ -5,13 +5,13 @@
         ]
     },
     "logs": {
-        "text": "var/infection/infection.log",
+        "text": "var/infection.log",
         "badge": {
             "branch": "master"
         }
     },
-    "minMsi": 90,
-    "minCoveredMsi": 90,
+    "minMsi": 100,
+    "minCoveredMsi": 100,
     "tmpDir": "var",
     "testFrameworkOptions": "-vvv"
 }

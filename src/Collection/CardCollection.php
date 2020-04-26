@@ -8,13 +8,24 @@ use App\Card;
 
 final class CardCollection extends \ArrayIterator
 {
+    private const START = 1;
+
     private ?string $owner = null;
 
+    /** @param int[] $array */
     public static function create(array $array = []): self
     {
         return new static(array_map(
             fn ($value) => new Card($value),
             array_filter($array, fn ($value) => \is_int($value))
+        ));
+    }
+
+    public static function range(int $total): self
+    {
+        return new static(array_map(
+            fn ($value) => new Card($value),
+            range(static::START, $total)
         ));
     }
 
@@ -50,8 +61,8 @@ final class CardCollection extends \ArrayIterator
         return parent::current()->setIdentifier($this->owner);
     }
 
-    public function key(): string
+    public function getMax(): Card
     {
-        return (string) parent::key();
+        return \max($this->getArrayCopy());
     }
 }

@@ -23,6 +23,24 @@ class GameTest extends TestCase
         static::assertInstanceOf(Player::class, $game->getWinner());
     }
 
+    public function testGetWinnerThrowException(): void
+    {
+        static::expectException(\Exception::class);
+        static::expectExceptionMessage('Player not found');
+
+        $game = new Game(2, 6, false);
+
+        $reflection = new \ReflectionClass($game);
+        $property = $reflection->getProperty('players');
+        $property->setAccessible(true);
+        $players = static::createMock(PlayerCollection::class);
+        $players->method('getPlayer')->willReturn(null);
+        $players->method('getPlayerIds')->willReturn(['id1', 'id2']);
+        $property->setValue($game, $players);
+
+        $game->getWinner();
+    }
+
     public function boolShuffle(): array
     {
         return [

@@ -8,6 +8,9 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - uses: php-actions/composer@v1 # or alternative dependency management
-    - uses: php-actions/phpunit@v1
-      with:
-        config: phpunit.xml.dist
+    - name: linter
+      run: sudo vendor/bin/phpcs && sudo vendor/bin/phpstan analyse --ansi -c phpstan.neon
+    - name: phpunit
+      run: sudo vendor/bin/phpunit --coverage-xml=var/coverage-xml --log-junit=var/junit.xml
+    - name: infection
+      run: sudo vendor/bin/infection --threads=4 --coverage=var/

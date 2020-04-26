@@ -4,29 +4,24 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Collection\CardCollection;
+
 class Round
 {
-    /** @var int[] */
-    private array $cards = [];
+    private CardCollection $cards;
 
-    /** @param Card[] $cards */
-    public function __construct(iterable $cards)
+    public function __construct(CardCollection $cards)
     {
-        foreach ($cards as $card) {
-            $this->cards[$card->getIdentifier()] = $card->getValue();
-        }
+        $this->cards = $cards;
     }
 
-    /**
-     * @return int[]
-     */
-    public function getCards(): array
+    public function getCards(): CardCollection
     {
         return $this->cards;
     }
 
-    public function getWinnerId(): string
+    public function getWinnerId(): ?string
     {
-        return array_search(max($this->cards), $this->cards, true);
+        return $this->cards->getMax()->getIdentifier();
     }
 }
