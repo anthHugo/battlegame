@@ -1,0 +1,17 @@
+{
+    "source": {
+        "directories": [
+            "src"
+        ]
+    },
+    "logs": {
+        "text": "var/infection.log",
+        "badge": {
+            "branch": "master"
+        }
+    },
+    "minMsi": 100,
+    "minCoveredMsi": 100,
+    "tmpDir": "var",
+    "testFrameworkOptions": "-vvv"
+}

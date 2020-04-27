@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests;
 
 use App\Card;
+use App\Collection\CardCollection;
 use App\Round;
 use PHPUnit\Framework\TestCase;
 
@@ -12,15 +13,22 @@ class RoundTest extends TestCase
 {
     public function testGetWinnerId(): void
     {
-        $round = new Round([1 => new Card(2), 3 => new Card(4)]);
+        $round = new Round(new CardCollection([
+            new Card(2, "P1"),
+            new Card(4, "P2")
+        ]));
 
-        static::assertSame("3", $round->getWinnerId());
+        static::assertSame("P2", $round->getWinnerId());
     }
 
     public function testGetCards(): void
     {
-        $round = new Round([1 => new Card(2), 3 => new Card(4)]);
+        $cards = new CardCollection([
+            new Card(2, "P1"),
+            new Card(4, "P2")
+        ]);
+        $round = new Round($cards);
 
-        static::assertSame([1 => 2, 3 => 4], $round->getCards());
+        static::assertSame($cards, $round->getCards());
     }
 }

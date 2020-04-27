@@ -4,51 +4,63 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Collection\CardCollection;
+use App\Collection\PlayerCollection;
+use App\Collection\RoundCollection;
+
 class Game
 {
-    /**
-     * @var Player[]
-     */
-    private array $players = [];
+    private PlayerCollection $players;
 
-    public function addPlayer(Player $player): self
+    private const START = 1;
+    private const DEFAULT_RESULT = 0;
+
+    public function __construct(int $totalPlayers, int $totalCards, bool $shuffle)
     {
-        $this->players[$player->getId()] = $player;
+        $this->players = new PlayerCollection();
+        $cards = CardCollection::range($totalCards);
 
-        return $this;
+        if ($shuffle) {
+            $cards = $cards->shuffle();
+        }
+
+        foreach (range(static::START, $totalPlayers) as $i) {
+            $this->players->append(new Player("Player $i", $cards->slice(\intval($i), $totalPlayers)));
+        }
     }
 
-    /**
-     * @return Player[]
-     */
-    public function getPlayers(): array
+    public function getPlayers(): PlayerCollection
     {
         return $this->players;
     }
 
-    /** @return Round[] */
-    public function getRounds(): array
+    public function getRounds(): RoundCollection
     {
-        $iterator = new \MultipleIterator(\MultipleIterator::MIT_NEED_ALL | \MultipleIterator::MIT_KEYS_ASSOC);
-
-        foreach ($this->players as $id => $player) {
-            $iterator->attachIterator(new \ArrayIterator($player->getCards()), $id);
-        }
-
-        return array_map(function (array $round) {
-            return new Round($round);
-        }, iterator_to_array($iterator, false));
+        return new RoundCollection($this->players);
     }
 
     public function getWinner(): Player
     {
-        $results = array_fill_keys(array_keys($this->players), 0);
+        $results = \array_fill_keys($this->players->getPlayerIds(), static::DEFAULT_RESULT);
+
         foreach ($this->getRounds() as $round) {
-            $results[$round->getWinnerId()]++;
+            if (\is_string($round->getWinnerId())) {
+                $results[$round->getWinnerId()]++;
+            }
         }
 
-        $winnerId = array_search(max($results), $results);
+        $player = $this->players->getPlayer($this->findWinnerId($results));
 
-        return $this->players[$winnerId];
+        if (\is_null($player)) {
+            throw new \Exception('Player not found');
+        }
+
+        return $player;
+    }
+
+    /** @param int[] $results */
+    private function findWinnerId(array $results = []): string
+    {
+        return \array_search(\max($results), $results, true);
     }
 }

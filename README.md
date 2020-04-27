@@ -1,6 +1,7 @@
 # BattleGame 
 ![CI](https://github.com/anthHugo/battlegame/workflows/CI/badge.svg)
-
+[![Infection MSI](https://badge.stryker-mutator.io/github.com/anthHugo/battlegame/master)](https://infection.github.io)
+ 
 Il s'agit de coder en PHP objet une simulation de jeu de bataille (le jeu de carte) en version simplifiée :
 
 * 52 cartes, on simplifie en utilisant simplement des valeurs de 1 à 52
