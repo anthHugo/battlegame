@@ -29,6 +29,16 @@ class CardCollectionTest extends TestCase
         static::assertCount(4, $collection);
     }
 
+    public function testRange(): void
+    {
+        $collection = CardCollection::range(2);
+
+        foreach ($collection as $index => $item) {
+            static::assertInstanceOf(Card::class, $item);
+            static::assertSame($index + 1, $item->getValue());
+        }
+    }
+
     /**
      * @dataProvider sliceProvider
      */
@@ -45,12 +55,7 @@ class CardCollectionTest extends TestCase
 
     public function testShuffle(): void
     {
-        static::assertNotSame(
-            range(1, 10),
-            CardCollection::create(range(1, 10))
-                ->shuffle()
-                ->getArrayCopy()
-        );
+        static::assertNotSame(range(1, 10), (new CardCollection())->shuffle(10)->getArrayCopy());
     }
 
     public function testSuitsAreDifferent(): void
@@ -66,6 +71,9 @@ class CardCollectionTest extends TestCase
 
     public function testMax(): void
     {
+        static::assertSame(null, CardCollection::create([])->getMax());
+        static::assertSame(null, CardCollection::create([1, 1])->getMax());
+        static::assertSame(null, CardCollection::create([5, 2, 3, 5])->getMax());
         static::assertSame(5, CardCollection::create([5, 2, 3])->getMax()->getValue());
     }
 

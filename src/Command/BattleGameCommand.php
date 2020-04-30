@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Collection\PlayerCollection;
+use App\Collection\ShuffleCardInterface;
 use App\Game;
 use App\Player;
 use App\Round;
@@ -18,12 +20,19 @@ class BattleGameCommand extends Command
     private const PLAYERS = 2;
     private const CARDS = 52;
     private const SUCCESS = 0;
+    private const START = 1;
 
-    private bool $shuffle;
+    private ShuffleCardInterface $shuffleCard;
 
-    public function __construct(bool $shuffle)
+    private Game $game;
+
+    private PlayerCollection $players;
+
+    public function __construct(Game $game, PlayerCollection $players, ShuffleCardInterface $shuffleCard)
     {
-        $this->shuffle = $shuffle;
+        $this->game = $game;
+        $this->players = $players;
+        $this->shuffleCard = $shuffleCard;
 
         parent::__construct('game:run');
     }
@@ -31,12 +40,17 @@ class BattleGameCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $style = new SymfonyStyle($input, $output);
+        $nbPlayers = \intval($style->askQuestion(new Question('Number of player ?', static::PLAYERS)));
+        $nbCards = \intval($style->askQuestion(new Question('Number of cards ?', static::CARDS)));
 
-        $game = new Game(
-            \intval($style->askQuestion(new Question('Number of player ?', static::PLAYERS))),
-            \intval($style->askQuestion(new Question('Number of cards ?', static::CARDS))),
-            $this->shuffle
-        );
+        $cards = $this->shuffleCard->shuffle($nbCards);
+        foreach (range(static::START, $nbPlayers) as $i) {
+            $this->players->addPlayer(new Player("Player $i", $cards->slice(\intval($i), $nbPlayers)));
+        }
+
+        $this->game->setPlayers($this->players);
+
+        $rounds = $this->game->run();
 
         $style->table(
             array_map(function (Player $player) use ($style): Player {
@@ -45,13 +59,17 @@ class BattleGameCommand extends Command
                 );
 
                 return $player;
-            }, $game->getPlayers()->getArrayCopy()),
+            }, $this->game->getPlayers()->getArrayCopy()),
             array_map(function (Round $round) {
                 return $round->getCards()->getArrayCopy();
-            }, $game->getRounds()->getArrayCopy())
+            }, $rounds->getArrayCopy())
         );
 
-        $style->write('Winner is : ' . $game->getWinner()->getName() . "\r\n");
+        $style->write(
+            \is_null($rounds->getWinner())
+                ? "Players are equals\r\n"
+                : 'Winner is : ' . $rounds->getWinner()->getName() . "\r\n"
+        );
 
         return static::SUCCESS;
     }

@@ -29,6 +29,13 @@ class PlayerCollectionTest extends TestCase
         static::assertNull((new PlayerCollection())->getPlayer('123'));
     }
 
+    public function testAddPlayer(): void
+    {
+        $collection = new PlayerCollection();
+        static::assertCount(0, $collection);
+        static::assertCount(1, $collection->addPlayer(new Player('123', new CardCollection())));
+    }
+
     public function testCreateCollectionWithInvalidInput(): void
     {
         static::assertCount(

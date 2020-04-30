@@ -22,6 +22,6 @@ class Round
 
     public function getWinnerId(): ?string
     {
-        return $this->cards->getMax()->getIdentifier();
+        return \is_null($this->cards->getMax()) ? null : $this->cards->getMax()->getIdentifier();
     }
 }

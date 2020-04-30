@@ -1,11 +1,14 @@
 #!/usr/bin/env php
 <?php
 
+use App\Collection\CardCollection;
+use App\Collection\PlayerCollection;
 use App\Command\BattleGameCommand;
+use App\Game;
 use Symfony\Component\Console\Application;
 
 require dirname(__DIR__).'/vendor/autoload.php';
 
 $application = new Application();
-$application->add(new BattleGameCommand(true));
+$application->add(new BattleGameCommand(new Game(), new PlayerCollection(), new CardCollection()));
 $application->run();
