@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
-use App\Card;
 use App\Collection\CardCollection;
 use App\Player;
 use PHPUnit\Framework\TestCase;
@@ -17,6 +16,14 @@ class PlayerTest extends TestCase
 
         static::assertSame('Player 1', $player->getName());
         static::assertInstanceOf(CardCollection::class, $player->getCards());
+    }
+
+    public function testSetName(): void
+    {
+        $player = new Player('Player 1', new CardCollection());
+
+        static::assertSame('Player 1', $player->getName());
+        static::assertSame('Player 2', $player->setName('Player 2')->getName());
     }
 
     public function testToString(): void

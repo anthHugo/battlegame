@@ -6,7 +6,7 @@ namespace App\Collection;
 
 use App\Card;
 
-final class CardCollection extends \ArrayIterator
+final class CardCollection extends \ArrayIterator implements ShuffleCardInterface
 {
     private const START = 1;
 
@@ -29,8 +29,12 @@ final class CardCollection extends \ArrayIterator
         ));
     }
 
-    public function shuffle(): self
+    public function shuffle(int $range = null): self
     {
+        if (\is_int($range)) {
+            return static::range($range)->shuffle();
+        }
+
         $cards = $this->getArrayCopy();
         $valid = shuffle($cards);
 
@@ -61,8 +65,20 @@ final class CardCollection extends \ArrayIterator
         return parent::current()->setIdentifier($this->owner);
     }
 
-    public function getMax(): Card
+    public function getMax(): ?Card
     {
-        return \max($this->getArrayCopy());
+        $values = array_count_values(array_map(fn (Card $card) => $card->getValue(), $this->getArrayCopy()));
+
+        if (count($values) === 0) {
+            return null;
+        }
+
+        $max = \max($this->getArrayCopy());
+
+        if ($values[$max->getValue()] === static::START) {
+            return $max;
+        }
+
+        return null;
     }
 }

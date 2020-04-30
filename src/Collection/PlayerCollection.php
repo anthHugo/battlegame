@@ -14,6 +14,13 @@ class PlayerCollection extends \ArrayIterator
         parent::__construct(array_filter($array, fn ($value) => $value instanceof Player));
     }
 
+    public function addPlayer(Player $player): self
+    {
+        $this->append($player);
+
+        return $this;
+    }
+
     public function current(): Player
     {
         return parent::current();
