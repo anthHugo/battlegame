@@ -27,6 +27,18 @@ class BattleGameCommandTest extends TestCase
         static::assertStringContainsString("Winner is : Peter", $command->getDisplay(true));
     }
 
+    public function testMinTwoPlayers(): void
+    {
+        $cards = static::createMock(ShuffleCardInterface::class);
+        $cards->method('shuffle')->willReturn(CardCollection::range(4));
+
+        $command = new CommandTester(new BattleGameCommand(new Game(), new PlayerCollection(), $cards));
+        $command->setInputs([1, 4, 'John']);
+        $command->execute([]);
+
+        static::assertStringContainsString("Minimum 2 players", $command->getDisplay(true));
+    }
+
     public function testPlayerAreEquals(): void
     {
         $cards = static::createMock(ShuffleCardInterface::class);
