@@ -1,6 +1,7 @@
 # BattleGame 
 ![CI](https://github.com/anthHugo/battlegame/workflows/CI/badge.svg)
-[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FanthHugo%2Fbattlegame%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/anthHugo/battlegame/master)
+[![codecov](https://codecov.io/gh/anthHugo/battlegame/branch/master/graph/badge.svg)](https://codecov.io/gh/anthHugo/battlegame)
+[![Infection MSI](https://badge.stryker-mutator.io/github.com/anthHugo/battlegame/master)](https://infection.github.io)
 
 Il s'agit de coder en PHP objet une simulation de jeu de bataille (le jeu de carte) en version simplifiée :
 

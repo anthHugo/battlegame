@@ -5,12 +5,22 @@ on: [push]
 jobs:
   build-test:
     runs-on: ubuntu-latest
+            
     steps:
     - uses: actions/checkout@v1
     - uses: php-actions/composer@v1 # or alternative dependency management
     - name: linter
       run: sudo vendor/bin/phpcs && sudo vendor/bin/phpstan analyse --ansi -c phpstan.neon
     - name: phpunit
-      run: sudo vendor/bin/phpunit --coverage-xml=var/coverage-xml --log-junit=var/junit.xml
+      run: |
+        touch coverage.xml
+        sudo vendor/bin/phpunit --coverage-xml=var/coverage-xml --coverage-clover=coverage.xml --log-junit=var/junit.xml
+        curl -s https://codecov.io/bash | bash -s -- -c -F aFlag -t $CODECOV_TOKEN -n $GITHUB_RUN_ID -f coverage.xml
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     - name: infection
-      run: sudo vendor/bin/infection --threads=4 --coverage=var/
+      run: |
+        sudo chmod 777 -R var/
+        vendor/bin/infection --threads=4 --coverage=var/
+      env:
+        STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
