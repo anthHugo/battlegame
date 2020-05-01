@@ -19,7 +19,7 @@ class Game
         $this->setPlayers($players);
     }
 
-    public function setPlayers(PlayerCollection $players): Game
+    public function setPlayers(PlayerCollection $players): self
     {
         $this->players = $players;
         $this->rounds = new RoundCollection($this->players);

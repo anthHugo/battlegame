@@ -20,6 +20,7 @@ class BattleGameCommand extends Command
     private const PLAYERS = 2;
     private const CARDS = 52;
     private const SUCCESS = 0;
+    private const ERROR = 0;
     private const START = 1;
 
     private ShuffleCardInterface $shuffleCard;
@@ -40,7 +41,14 @@ class BattleGameCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $style = new SymfonyStyle($input, $output);
-        $nbPlayers = \intval($style->askQuestion(new Question('Number of player ?', static::PLAYERS)));
+        $nbPlayers = \intval($style->askQuestion(new Question('Number of player ? (min 2)', static::PLAYERS)));
+
+        if ($nbPlayers < static::PLAYERS) {
+            $style->error('Minimum 2 players');
+
+            return static::ERROR;
+        }
+
         $nbCards = \intval($style->askQuestion(new Question('Number of cards ?', static::CARDS)));
 
         $cards = $this->shuffleCard->shuffle($nbCards);
